@@ -44,7 +44,7 @@
 
 static std::mt19937 randy{std::random_device{}()};
 
-std::string rainbowify(std::string torainbow, size_t chunk)
+std::string& rainbowify(std::string& torainbow, size_t chunk)
 {
 	static constexpr std::array<std::string_view, 10> colors =
 		{
@@ -119,7 +119,13 @@ int main(int argc, char** argv)
 //	d = 10000;
 //	b = 1000;
 	
-	constexpr auto credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
+	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
+	if (number(0, 2) == 0)
+	{
+		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable" };
+		credit.insert(14, 1, ' ');
+		credit.insert(15, take_sample(embellishment));
+	}
 	if (use_color)
 		std::cout << rainbowify(credit, number(1, 10));
 	else
