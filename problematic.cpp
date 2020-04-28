@@ -46,7 +46,7 @@ template <typename T>
 T take_sample(const std::vector<T>& tosample)
 {
 	std::uniform_int_distribution<int> dist(0, tosample.size()-1);
-	return tosample.at(dist(randy));
+	return tosample[dist(randy)];
 }
 
 int number(int from, int to)
