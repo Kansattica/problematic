@@ -37,15 +37,15 @@
 
 #include <iostream>
 #include <string_view>
-#include <vector>
+#include <array>
 #include <random>
 
 static std::mt19937 randy{std::random_device{}()};
 
-template <typename T>
-T take_sample(const std::vector<T>& tosample)
+template <typename T, size_t size>
+T take_sample(const std::array<T, size>& tosample)
 {
-	std::uniform_int_distribution<int> dist(0, tosample.size()-1);
+	std::uniform_int_distribution<int> dist(0, size-1);
 	return tosample[dist(randy)];
 }
 
@@ -73,17 +73,17 @@ int main(int argc, char** argv)
 {
 	const bool use_color = argc > 1;
 	const auto errlevels = !use_color ?
-		std::vector<std::string_view>{ "INFO ", "WARN ", "ERROR", "AAAAH", "EMERG", "FATAL" } :
-		std::vector<std::string_view>{ "\033[38;5;12mINFO ", "\033[38;5;11mWARN ", "\033[38;5;9mERROR", "\033[38;5;13mAAAAH", "\033[38;5;202mEMERG", "\033[38;5;207mFATAL" };
-	const std::vector<std::string_view> sensor { "ARMNERV", "CPUCORE", "CIRCUIT", "GAYGAYGAY", "TEMP", "AUTOFIX", "PHYSBUF", "ADDER", "AIPROTO", "FAILSAFE", "!!!!", "/dev/tty", "/dev/null", "/dev/urandom", "RADIO", "RAD", "STABILITY", "MEMCHECK", "SERVO", "MOTOR", "???", "ENTROPY", "PASSWORD", "/etc/shadow", "HASH", "CONSISTENCY", "CHECKSUM", "ECHO", "PARITY", "CONCURRENCY", "THREAD" };
-	const std::vector<std::string_view> modifier { "", "", "", "", "", "", "", "", "", "", "", "", " POSSIBLY", " ILLEGAL", " ILLEGALLY", " EXTREMELY", " HAZARDOUSLY", " DANGEROUSLY" };
-	const std::vector<std::string_view> description { "CRITICAL", "OVERHEATING", "OVERLOADING", "OVERVOLT", "COOLANT", "CONSUMING", "CURIEPOINT", "LOST" , "PANIC", "DISRUPTION", "MELTING", "DISCONNECT", "EXHAUSTION", "RESERVE", "RETRY", "E-STOP", "OVERCHARGE", "UNDERCHARGE", "DEGRADATION" };
-	const std::vector<std::string_view> problem { "LEAK", "SWELL", "INCALCULABLE", "NOT A TYPEWRITER", "ON FIRE", "GIRLS", "8==D", "SSSSSS", "COGNITOHAZARDOUS", "INFOHAZARD", "UNKNOWN", "IMPOSSIBLE", "INFINITE", "GRACEFUL", "UNRESPONSIVE", "UNRECOVERABLE", "HALT", "SHUTDOWN", "RESTART", "UNEXPECTED", "INCONCEIVABLE", "HAZARDOUS", "FAIL", "FAILURE", "PROBLEM", "ILLEGAL", "UNPARSEABLE", "VIRTUAL", "READONLY", "IRREVERSIBLE" };
-	const std::vector<std::string_view> prefix { "", "", "/dev/", "/proc/", "/etc/", "/misc/", "/root/", "~/", "/bin/", "/boot/" };
-	const std::vector<std::string_view> func { "void", "read", "write", "calibrate", "spunch", "wrangle", "mangle", "spangle", "decorate", "new", "alloc", "malloc", "twist", "spunch", "glunk", "bitblit", "fiasco", "main", "???", "!!!", "???????????", "unknown", "known", "connect", "put", "get", "swizzle", "assemble", "ruin", "futz", "dribble", "futz", "jig", "thunk", "thonk", "try", "catch", "finally", "final", "parse", "swap", "trade", "atomic", "float", "operator,", "operator<<", "flip", "popcnt", "handle", "compile", "fix", "crinkle", "bend", "fold", "spindle", "spool", "init", "exit", "crash", "enter", "left", "right", "up", "down", "curl", "wcsrtombs" };
-	const std::vector<std::string_view> prefunc { "", "", "de", "un", "re", "0x", "_", "__", "!", "$", "?", "~", "&", "::" };
-	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
-	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
+		std::array<std::string_view, 6>{ "INFO ", "WARN ", "ERROR", "AAAAH", "EMERG", "FATAL" } :
+		std::array<std::string_view, 6>{ "\033[38;5;12mINFO ", "\033[38;5;11mWARN ", "\033[38;5;9mERROR", "\033[38;5;13mAAAAH", "\033[38;5;202mEMERG", "\033[38;5;207mFATAL" };
+	constexpr std::array<std::string_view, 31> sensor { "ARMNERV", "CPUCORE", "CIRCUIT", "GAYGAYGAY", "TEMP", "AUTOFIX", "PHYSBUF", "ADDER", "AIPROTO", "FAILSAFE", "!!!!", "/dev/tty", "/dev/null", "/dev/urandom", "RADIO", "RAD", "STABILITY", "MEMCHECK", "SERVO", "MOTOR", "???", "ENTROPY", "PASSWORD", "/etc/shadow", "HASH", "CONSISTENCY", "CHECKSUM", "ECHO", "PARITY", "CONCURRENCY", "THREAD" };
+	constexpr std::array<std::string_view, 18> modifier { "", "", "", "", "", "", "", "", "", "", "", "", " POSSIBLY", " ILLEGAL", " ILLEGALLY", " EXTREMELY", " HAZARDOUSLY", " DANGEROUSLY" };
+	constexpr std::array<std::string_view, 19> description { "CRITICAL", "OVERHEATING", "OVERLOADING", "OVERVOLT", "COOLANT", "CONSUMING", "CURIEPOINT", "LOST" , "PANIC", "DISRUPTION", "MELTING", "DISCONNECT", "EXHAUSTION", "RESERVE", "RETRY", "E-STOP", "OVERCHARGE", "UNDERCHARGE", "DEGRADATION" };
+	constexpr std::array<std::string_view, 30> problem { "LEAK", "SWELL", "INCALCULABLE", "NOT A TYPEWRITER", "ON FIRE", "GIRLS", "8==D", "SSSSSS", "COGNITOHAZARDOUS", "INFOHAZARD", "UNKNOWN", "IMPOSSIBLE", "INFINITE", "GRACEFUL", "UNRESPONSIVE", "UNRECOVERABLE", "HALT", "SHUTDOWN", "RESTART", "UNEXPECTED", "INCONCEIVABLE", "HAZARDOUS", "FAIL", "FAILURE", "PROBLEM", "ILLEGAL", "UNPARSEABLE", "VIRTUAL", "READONLY", "IRREVERSIBLE" };
+	constexpr std::array<std::string_view, 10> prefix { "", "", "/dev/", "/proc/", "/etc/", "/misc/", "/root/", "~/", "/bin/", "/boot/" };
+	constexpr std::array<std::string_view, 67> func { "void", "read", "write", "calibrate", "spunch", "wrangle", "mangle", "spangle", "decorate", "new", "alloc", "malloc", "twist", "spunch", "glunk", "bitblit", "fiasco", "main", "???", "!!!", "???????????", "unknown", "known", "connect", "put", "get", "swizzle", "assemble", "ruin", "futz", "dribble", "futz", "jig", "thunk", "thonk", "try", "catch", "finally", "final", "parse", "swap", "trade", "atomic", "float", "operator,", "operator<<", "flip", "popcnt", "handle", "compile", "fix", "crinkle", "bend", "fold", "spindle", "spool", "init", "exit", "crash", "enter", "left", "right", "up", "down", "curl", "wcsrtombs" };
+	constexpr std::array<std::string_view, 14> prefunc { "", "", "de", "un", "re", "0x", "_", "__", "!", "$", "?", "~", "&", "::" };
+	constexpr std::array<std::string_view, 8> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
+	constexpr std::array<std::string_view, 12> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
 
 //	unsigned int a, b, c, d;
 //	a = c = 0;
