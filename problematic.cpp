@@ -119,7 +119,7 @@ int main(int argc, char** argv)
 //	d = 10000;
 //	b = 1000;
 	
-	constexpr auto credit = "problematic by Grace Danger Lovelace - https://github.com/Kansattica/problematic\n";
+	constexpr auto credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
 	if (use_color)
 		std::cout << rainbowify(credit, number(1, 10));
 	else
