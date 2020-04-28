@@ -64,8 +64,6 @@ int main(int argc, char** argv)
 		 }
 
 		 std::cout << '\n';
-		 if (use_color)
-			 std::cout << "\033[39m";
 	}
 
 }
