@@ -16,6 +16,19 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 	For license inquiries, contact grace@hypnovir.us
+
+	USAGE:
+		compile like this:
+
+		g++ -std=c++17 -O3 problematic.cpp -o problematic
+
+		run like this:
+
+		./problematic asdf | pv q -L 300
+
+		problematic produces a lot of output as fast as it can, so something like pv or head will help a lot.
+
+		Starting problematic with at least one command line argument will print colorful errors.
 */
 
 
