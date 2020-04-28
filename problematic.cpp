@@ -39,8 +39,37 @@
 #include <string_view>
 #include <vector>
 #include <random>
+#include <array>
+#include <string>
 
 static std::mt19937 randy{std::random_device{}()};
+
+std::string rainbowify(std::string torainbow, size_t chunk)
+{
+	static constexpr std::array<std::string_view, 10> colors =
+		{
+			"\033[38;5;196m",
+			"\033[38;5;199m",
+			"\033[38;5;205m",
+			"\033[38;5;202m",
+			"\033[38;5;208m",
+			"\033[38;5;214m",
+			"\033[38;5;112m",
+			"\033[38;5;45m",
+			"\033[38;5;91m",
+			"\033[38;5;55m"
+		};
+
+	size_t color = 0;
+	for (size_t idx = 0; idx < torainbow.size(); idx += chunk)
+	{
+		torainbow.insert(idx, colors[color]);
+		idx += colors[color].size();
+		color = (color + 1) % colors.size();
+	}
+	torainbow.append("\033[39m"); //reset color, just in case
+	return torainbow;
+}
 
 template <typename T>
 T take_sample(const std::vector<T>& tosample)
@@ -89,6 +118,14 @@ int main(int argc, char** argv)
 //	a = c = 0;
 //	d = 10000;
 //	b = 1000;
+	
+	constexpr auto credit = "problematic by Grace Danger Lovelace - https://github.com/Kansattica/problematic";
+	if (use_color)
+		std::cout << rainbowify(credit, number(1, 10));
+	else
+		std::cout << credit;
+	std::cout << '\n';
+
 	while (true)
 	{
 		std::cout << /*'[' << "20XX-88-62:" << (a += number(6,9)) << ':' << (b += number(4,20)) << ':' << (c += number(8,88)) << '.' << (d += number(1, 1000)) << "] " <<*/
