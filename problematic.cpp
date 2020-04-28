@@ -17,6 +17,8 @@
 
 	For license inquiries, contact grace@hypnovir.us
 
+	Source code and license available at https://github.com/Kansattica/problematic
+
 	USAGE:
 
 	compile like this:

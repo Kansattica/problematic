@@ -3,7 +3,7 @@ Prints randomly generated errors to the console. You can see it in action here: 
 
 Compile it like this: `g++ -std=c++17 -O3 problematic.cpp -o problematic`
 
-It produces a LOT of output very fast, so it's best to pipe the output through `head` or `pv -L`. I usually run it like so:
+It produces a LOT of output very fast (around 90MB/s on my machine), so it's best to pipe the output through `head` or `pv -L`. I usually run it like so:
 
 ```
 ./problematic asdf | pv -q -L 300
