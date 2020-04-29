@@ -46,7 +46,7 @@ static std::mt19937 randy{std::random_device{}()};
 
 std::string& rainbowify(std::string& torainbow, size_t chunk)
 {
-	static constexpr std::array<std::string_view, 10> colors =
+	constexpr std::array<std::string_view, 10> colors =
 		{
 			"\033[38;5;196m",
 			"\033[38;5;199m",
