@@ -1,5 +1,5 @@
 # problematic
-Prints randomly generated errors to the console. You can see it in action here: https://gracebuilds.internetpro.me
+Prints randomly generated errors to the console. You can see it in action here: https://problematic.internetpro.me
 
 Compile it like this: `g++ -std=c++17 -O3 problematic.cpp -o problematic`
 
