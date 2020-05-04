@@ -84,7 +84,6 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 			color = (color + 1) % colors.size();
 		}
 	}
-	torainbow.append("\033[39m"); //reset color, just in case
 	return torainbow;
 }
 
