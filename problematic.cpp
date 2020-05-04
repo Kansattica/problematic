@@ -63,11 +63,23 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 			};
 
 	size_t color = 0;
-	for (size_t idx = 0; idx < torainbow.size(); idx += chunk)
+	if (chunk == 0)
 	{
-		torainbow.insert(idx, colors[color]);
-		idx += colors[color].size();
-		color = (color + 1) % colors.size();
+		for (size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /", idx + 1))
+		{
+			torainbow.insert(idx, colors[color]);
+			idx += colors[color].size();
+			color = (color + 1) % colors.size();
+		}
+	}
+	else
+	{
+		for (size_t idx = 0; idx < torainbow.size(); idx += chunk)
+		{
+			torainbow.insert(idx, colors[color]);
+			idx += colors[color].size();
+			color = (color + 1) % colors.size();
+		}
 	}
 	torainbow.append("\033[39m"); //reset color, just in case
 	return torainbow;
@@ -129,7 +141,7 @@ int main(int argc, char** argv)
 		credit.insert(15, take_sample(embellishment));
 	}
 	if (use_color)
-		std::cout << rainbowify(credit, number(1, 10));
+		std::cout << rainbowify(credit, number(0, 10));
 	else
 		std::cout << credit;
 
