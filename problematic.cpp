@@ -130,11 +130,6 @@ int main(int argc, char** argv)
 	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
 	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
 
-//	unsigned int a, b, c, d;
-//	a = c = 0;
-//	d = 10000;
-//	b = 1000;
-	
 	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
 	if (number(0, 2) == 0)
 	{
@@ -149,9 +144,7 @@ int main(int argc, char** argv)
 
 	while (true)
 	{
-		std::cout << /*'[' << "20XX-88-62:" << (a += number(6,9)) << ':' << (b += number(4,20)) << ':' << (c += number(8,88)) << '.' << (d += number(1, 1000)) << "] " <<*/
-		 take_sample(errlevels) << " | " << take_sample(prefix) << take_sample(sensor) << number(0,99) << ' ' << take_sample(description) << take_sample(modifier) << ' ' << take_sample(problem)
-		 << (number(0, 10) ? "" : randomstring(number(1, 20))) << ' ';
+		std::cout << take_sample(errlevels) << " | " << take_sample(prefix) << take_sample(sensor) << number(0,99) << ' ' << take_sample(description) << take_sample(modifier) << ' ' << take_sample(problem) << (number(0, 10) ? "" : randomstring(number(1, 20))) << ' ';
 
 		 for (int i = 0; i < number(1, 5); i++)
 		 {
