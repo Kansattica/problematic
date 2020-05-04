@@ -138,7 +138,7 @@ int main(int argc, char** argv)
 	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
 	if (number(0, 2) == 0)
 	{
-		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring" };
+		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring", "the beloved" };
 		credit.insert(14, 1, ' ');
 		credit.insert(15, take_sample(embellishment));
 	}
