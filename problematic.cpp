@@ -102,7 +102,7 @@ int number(int from, int to)
 
 char character()
 {
-	return '0' + number(0, 60);
+	return '0' + number(0, 74);
 }
 
 static char to_return[30];
