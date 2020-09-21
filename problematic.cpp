@@ -131,6 +131,11 @@ void print_credit(bool use_color)
 
 int main(int argc, char** argv)
 {
+	// unsync from C IO. Problematic doesn't need it.
+	// problematic fills the buffer so fast, this is a significant perf boost
+	// Especially since this flushes the buffer every newline if turned on.
+	std::ios::sync_with_stdio(false);
+
 	const bool use_color = argc > 1;
 	const auto errlevels = !use_color ?
 		std::vector<std::string_view>{ "INFO ", "WARN ", "ERROR", "AAAAH", "EMERG", "FATAL" } :
