@@ -42,7 +42,7 @@
 #include <array>
 #include <string>
 
-static std::mt19937 randy{std::random_device{}()};
+static std::minstd_rand randy{std::random_device{}()};
 
 std::string& rainbowify(std::string& torainbow, size_t chunk)
 {
