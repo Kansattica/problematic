@@ -47,7 +47,7 @@ static std::minstd_rand randy{std::random_device{}()};
 std::string& rainbowify(std::string& torainbow, std::size_t chunk)
 {
 	// reference for color codes is: https://stackoverflow.com/a/33206814/5587653
-	constexpr std::array<std::string_view, 14> colors =
+	static constexpr std::array<std::string_view, 14> colors =
 			{
 					"\033[38;5;196m",
 					"\033[38;5;199m",
