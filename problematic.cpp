@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
 	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
 
-	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
+	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic - https://hypnovir.us\n";
 	if (number(0, 2) == 0)
 	{
 		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring", "the beloved" };
