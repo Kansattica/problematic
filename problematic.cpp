@@ -44,7 +44,7 @@
 
 static std::minstd_rand randy{std::random_device{}()};
 
-std::string& rainbowify(std::string& torainbow, size_t chunk)
+std::string& rainbowify(std::string& torainbow, std::size_t chunk)
 {
 	// reference for color codes is: https://stackoverflow.com/a/33206814/5587653
 	constexpr std::array<std::string_view, 14> colors =
@@ -65,10 +65,10 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 					"\033[38;5;197m"
 			};
 
-	size_t color = 0;
+	std::size_t color = 0;
 	if (chunk == 0)
 	{
-		for (size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /.", idx + 1))
+		for (std::size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /.", idx + 1))
 		{
 			torainbow.insert(idx, colors[color]);
 			idx += colors[color].size();
@@ -77,7 +77,7 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 	}
 	else
 	{
-		for (size_t idx = 0; idx < torainbow.size(); idx += chunk)
+		for (std::size_t idx = 0; idx < torainbow.size(); idx += chunk)
 		{
 			torainbow.insert(idx, colors[color]);
 			idx += colors[color].size();
@@ -106,9 +106,9 @@ char character()
 }
 
 static char to_return[30];
-const char* randomstring(size_t length)
+const char* randomstring(std::size_t length)
 {
-	for (size_t i = 0; i < length; i++)
+	for (std::size_t i = 0; i < length; i++)
 		to_return[i] = character();
 	to_return[length] = '\0';
 	return to_return;
