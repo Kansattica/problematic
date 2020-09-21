@@ -68,7 +68,7 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 	size_t color = 0;
 	if (chunk == 0)
 	{
-		for (size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /", idx + 1))
+		for (size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /.", idx + 1))
 		{
 			torainbow.insert(idx, colors[color]);
 			idx += colors[color].size();
@@ -114,6 +114,21 @@ const char* randomstring(size_t length)
 	return to_return;
 }
 
+void print_credit(bool use_color)
+{
+	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic - https://hypnovir.us\n";
+	if (number(0, 2) == 0)
+	{
+		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring", "the beloved" };
+		credit.insert(14, 1, ' ');
+		credit.insert(15, take_sample(embellishment));
+	}
+	if (use_color)
+		std::cout << rainbowify(credit, number(0, 10));
+	else
+		std::cout << credit;
+}
+
 int main(int argc, char** argv)
 {
 	const bool use_color = argc > 1;
@@ -130,17 +145,7 @@ int main(int argc, char** argv)
 	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
 	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
 
-	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic - https://hypnovir.us\n";
-	if (number(0, 2) == 0)
-	{
-		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring", "the beloved" };
-		credit.insert(14, 1, ' ');
-		credit.insert(15, take_sample(embellishment));
-	}
-	if (use_color)
-		std::cout << rainbowify(credit, number(0, 10));
-	else
-		std::cout << credit;
+	print_credit(use_color);
 
 	while (true)
 	{
