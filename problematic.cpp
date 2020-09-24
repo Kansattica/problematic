@@ -42,12 +42,12 @@
 #include <array>
 #include <string>
 
-static std::mt19937 randy{std::random_device{}()};
+static std::minstd_rand randy{std::random_device{}()};
 
-std::string& rainbowify(std::string& torainbow, size_t chunk)
+std::string& rainbowify(std::string& torainbow, std::size_t chunk)
 {
 	// reference for color codes is: https://stackoverflow.com/a/33206814/5587653
-	constexpr std::array<std::string_view, 14> colors =
+	static constexpr std::array<std::string_view, 14> colors =
 			{
 					"\033[38;5;196m",
 					"\033[38;5;199m",
@@ -65,10 +65,10 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 					"\033[38;5;197m"
 			};
 
-	size_t color = 0;
+	std::size_t color = 0;
 	if (chunk == 0)
 	{
-		for (size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /", idx + 1))
+		for (std::size_t idx = 0; idx != std::string::npos; idx = torainbow.find_first_of(" /.", idx + 1))
 		{
 			torainbow.insert(idx, colors[color]);
 			idx += colors[color].size();
@@ -77,7 +77,7 @@ std::string& rainbowify(std::string& torainbow, size_t chunk)
 	}
 	else
 	{
-		for (size_t idx = 0; idx < torainbow.size(); idx += chunk)
+		for (std::size_t idx = 0; idx < torainbow.size(); idx += chunk)
 		{
 			torainbow.insert(idx, colors[color]);
 			idx += colors[color].size();
@@ -106,31 +106,17 @@ char character()
 }
 
 static char to_return[30];
-const char* randomstring(size_t length)
+const char* randomstring(std::size_t length)
 {
-	for (size_t i = 0; i < length; i++)
+	for (std::size_t i = 0; i < length; i++)
 		to_return[i] = character();
 	to_return[length] = '\0';
 	return to_return;
 }
 
-int main(int argc, char** argv)
+void print_credit(bool use_color)
 {
-	const bool use_color = argc > 1;
-	const auto errlevels = !use_color ?
-		std::vector<std::string_view>{ "INFO ", "WARN ", "ERROR", "AAAAH", "EMERG", "FATAL" } :
-		std::vector<std::string_view>{ "\033[38;5;12mINFO ", "\033[38;5;11mWARN ", "\033[38;5;9mERROR", "\033[38;5;13mAAAAH", "\033[38;5;202mEMERG", "\033[38;5;207mFATAL" };
-	const std::vector<std::string_view> sensor { "ARMNERV", "CPUCORE", "CIRCUIT", "GAYGAYGAY", "TEMP", "AUTOFIX", "PHYSBUF", "ADDER", "AIPROTO", "FAILSAFE", "!!!!", "/dev/tty", "/dev/null", "/dev/urandom", "RADIO", "RAD", "STABILITY", "MEMCHECK", "SERVO", "MOTOR", "???", "ENTROPY", "PASSWORD", "/etc/shadow", "HASH", "CONSISTENCY", "CHECKSUM", "ECHO", "PARITY", "CONCURRENCY", "THREAD", "lp", "OPERATION", "ATTEMPT", "PARTITION", "SEGMENTATION", "STACK", "HEAP", "BUFFER", "/var/spool", "KERNEL" };
-	const std::vector<std::string_view> modifier { "", "", "", "", "", "", "", "", "", "", "", "", " POSSIBLY", " ILLEGAL", " ILLEGALLY", " EXTREMELY", " HAZARDOUSLY", " DANGEROUSLY" };
-	const std::vector<std::string_view> description { "CRITICAL", "OVERHEATING", "OVERLOADING", "OVERVOLT", "COOLANT", "CONSUMING", "CURIEPOINT", "LOST" , "PANIC", "DISRUPTION", "MELTING", "DISCONNECT", "EXHAUSTION", "RESERVE", "RETRY", "E-STOP", "OVERCHARGE", "UNDERCHARGE", "DEGRADATION", "OVERFLOW", "UNDERFLOW", "UNDERRUN" };
-	const std::vector<std::string_view> problem { "LEAK", "SWELL", "INCALCULABLE", "NOT A TYPEWRITER", "ON FIRE", "GIRLS", "8==D", "SSSSSS", "COGNITOHAZARDOUS", "INFOHAZARD", "UNKNOWN", "IMPOSSIBLE", "INFINITE", "GRACEFUL", "UNRESPONSIVE", "UNRECOVERABLE", "HALT", "SHUTDOWN", "RESTART", "UNEXPECTED", "INCONCEIVABLE", "HAZARDOUS", "FAIL", "FAILURE", "PROBLEM", "ILLEGAL", "UNPARSEABLE", "VIRTUAL", "READONLY", "IRREVERSIBLE", "BURST", "LOAD LETTER", "FAULT" };
-	const std::vector<std::string_view> prefix { "", "", "/dev/", "/proc/", "/etc/", "/misc/", "/root/", "~/", "/bin/", "/boot/" };
-	const std::vector<std::string_view> func { "void", "read", "write", "calibrate", "spunch", "wrangle", "mangle", "spangle", "decorate", "new", "alloc", "malloc", "twist", "spunch", "glunk", "bitblit", "fiasco", "main", "???", "!!!", "???????????", "unknown", "known", "connect", "put", "get", "swizzle", "assemble", "ruin", "futz", "dribble", "futz", "jig", "thunk", "thonk", "try", "catch", "finally", "final", "parse", "swap", "trade", "atomic", "float", "operator,", "operator<<", "flip", "popcnt", "handle", "compile", "fix", "crinkle", "bend", "fold", "spindle", "spool", "init", "exit", "crash", "enter", "left", "right", "up", "down", "curl", "wcsrtombs", "sort", "shuffle", "transmute", "fork", "spoon", "exec", "cpy", "mov", "zot", "atoi", "itoa" };
-	const std::vector<std::string_view> prefunc { "", "", "de", "un", "re", "0x", "_", "__", "!", "$", "?", "~", "&", "::", "__builtin_", "__cxx_", "mem", "str" };
-	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
-	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
-
-	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic\n";
+	std::string credit = "problematic by Grace Danger Lovelace - 20XX - https://github.com/Kansattica/problematic - https://hypnovir.us\n";
 	if (number(0, 2) == 0)
 	{
 		const std::vector<std::string_view> embellishment { "the lovely", "the perfect", "the delightful", "the one and only", "the villainous", "Vx.", "Princess", "the spellbinding", "the unmistakable", "the head-turning", "the unforgettable", "the villainous viral vixen", "the amazing", "the awe-inspiring", "the beloved" };
@@ -141,6 +127,30 @@ int main(int argc, char** argv)
 		std::cout << rainbowify(credit, number(0, 10));
 	else
 		std::cout << credit;
+}
+
+int main(int argc, char** argv)
+{
+	// unsync from C IO. Problematic doesn't need it.
+	// problematic fills the buffer so fast, this is a significant perf boost
+	// Especially since this flushes the buffer every newline if turned on.
+	std::ios::sync_with_stdio(false);
+
+	const bool use_color = argc > 1;
+	const auto errlevels = !use_color ?
+		std::vector<std::string_view>{ "INFO ", "WARN ", "ERROR", "AAAAH", "EMERG", "FATAL" } :
+		std::vector<std::string_view>{ "\033[38;5;12mINFO ", "\033[38;5;11mWARN ", "\033[38;5;9mERROR", "\033[38;5;13mAAAAH", "\033[38;5;202mEMERG", "\033[38;5;207mFATAL" };
+	const std::vector<std::string_view> sensor { "ARMNERV", "CPUCORE", "CIRCUIT", "GAYGAYGAY", "TEMP", "AUTOFIX", "PHYSBUF", "ADDER", "AIPROTO", "FAILSAFE", "!!!!", "/dev/tty", "/dev/null", "/dev/urandom", "RADIO", "RAD", "STABILITY", "MEMCHECK", "SERVO", "MOTOR", "???", "ENTROPY", "PASSWORD", "/etc/shadow", "HASH", "CONSISTENCY", "CHECKSUM", "ECHO", "PARITY", "CONCURRENCY", "THREAD", "lp", "OPERATION", "ATTEMPT", "PARTITION", "SEGMENTATION", "STACK", "HEAP", "BUFFER", "/var/spool", "KERNEL" };
+	const std::vector<std::string_view> modifier { "", "", "", "", "", "", "", "", "", "", "", "", " POSSIBLY", " ILLEGAL", " ILLEGALLY", " EXTREMELY", " HAZARDOUSLY", " DANGEROUSLY", " VERY" };
+	const std::vector<std::string_view> description { "CRITICAL", "OVERHEATING", "OVERLOADING", "OVERVOLT", "COOLANT", "CONSUMING", "CURIEPOINT", "LOST" , "PANIC", "DISRUPTION", "MELTING", "DISCONNECT", "EXHAUSTION", "RESERVE", "RETRY", "E-STOP", "OVERCHARGE", "UNDERCHARGE", "DEGRADATION", "OVERFLOW", "UNDERFLOW", "UNDERRUN" };
+	const std::vector<std::string_view> problem { "LEAK", "SWELL", "INCALCULABLE", "NOT A TYPEWRITER", "ON FIRE", "GIRLS", "8==D", "SSSSSS", "COGNITOHAZARDOUS", "INFOHAZARD", "UNKNOWN", "IMPOSSIBLE", "INFINITE", "GRACEFUL", "UNRESPONSIVE", "UNRECOVERABLE", "HALT", "SHUTDOWN", "RESTART", "UNEXPECTED", "INCONCEIVABLE", "HAZARDOUS", "FAIL", "FAILURE", "PROBLEM", "ILLEGAL", "UNPARSEABLE", "VIRTUAL", "READONLY", "IRREVERSIBLE", "BURST", "LOAD LETTER", "FAULT", "GOOD", "BAD" };
+	const std::vector<std::string_view> prefix { "", "", "/dev/", "/proc/", "/etc/", "/misc/", "/root/", "~/", "/bin/", "/boot/" };
+	const std::vector<std::string_view> func { "void", "read", "write", "calibrate", "spunch", "wrangle", "mangle", "spangle", "decorate", "new", "alloc", "malloc", "twist", "spunch", "glunk", "bitblit", "fiasco", "main", "???", "!!!", "???????????", "unknown", "known", "connect", "put", "get", "swizzle", "assemble", "ruin", "futz", "dribble", "futz", "jig", "thunk", "thonk", "try", "catch", "finally", "final", "parse", "swap", "trade", "atomic", "float", "operator,", "operator<<", "flip", "popcnt", "handle", "compile", "fix", "crinkle", "bend", "fold", "spindle", "spool", "init", "exit", "crash", "enter", "left", "right", "up", "down", "curl", "wcsrtombs", "sort", "shuffle", "transmute", "fork", "spoon", "exec", "cpy", "mov", "zot", "atoi", "itoa", "time", "strtok", "strzok", "fmp" };
+	const std::vector<std::string_view> prefunc { "", "", "de", "un", "re", "0x", "_", "__", "!", "$", "?", "~", "&", "::", "__builtin_", "__cxx_", "mem", "str", "mk", "gm" };
+	const std::vector<std::string_view> infunc { "in", "on", "around", "because of", "due to", "error from", "responsible for", "???" };
+	const std::vector<std::string_view> funcargs { "()", "()", "(int)", "(int, float)", "(string&)", "(void*)", "(void**)", "(std::mt19937&)", "(int argv, char** argc)", "(??""?)" };
+
+	print_credit(use_color);
 
 	while (true)
 	{
