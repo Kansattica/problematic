@@ -156,12 +156,12 @@ int main(int argc, char** argv)
 	{
 		std::cout << take_sample(errlevels) << " | " << take_sample(prefix) << take_sample(sensor) << number(0,99) << ' ' << take_sample(description) << take_sample(modifier) << ' ' << take_sample(problem) << (number(0, 10) ? "" : randomstring(number(1, 20))) << ' ';
 
-		 for (int i = 0; i < number(1, 5); i++)
-		 {
-			 std::cout << take_sample(infunc) << ": " << take_sample(prefunc) << take_sample(func) << take_sample(funcargs) << ':' << number(1, 9999) << ", ";
-		 }
+		for (int i = 0; i < number(1, 5); i++)
+		{
+			std::cout << take_sample(infunc) << ": " << take_sample(prefunc) << take_sample(func) << take_sample(funcargs) << ':' << number(1, 9999) << ", ";
+		}
 
-		 std::cout << '\n';
+		std::cout << '\n';
 	}
 
 }
